@@ -1,0 +1,209 @@
+{
+	"actions": [],
+	"creation": "2026-03-18 00:00:00.000000",
+	"doctype": "DocType",
+	"engine": "InnoDB",
+	"fields": [
+		{
+			"default": "0",
+			"fieldname": "enabled",
+			"fieldtype": "Check",
+			"label": "Enabled"
+		},
+		{
+			"default": "1",
+			"fieldname": "sandbox_mode",
+			"fieldtype": "Check",
+			"label": "Sandbox Mode"
+		},
+		{
+			"fieldname": "sb_credentials",
+			"fieldtype": "Section Break",
+			"label": "Credentials"
+		},
+		{
+			"fieldname": "merchant_id",
+			"fieldtype": "Data",
+			"label": "Merchant ID",
+			"reqd": 1
+		},
+		{
+			"fieldname": "merchant_key",
+			"fieldtype": "Data",
+			"label": "Merchant Key",
+			"reqd": 1
+		},
+		{
+			"fieldname": "passphrase",
+			"fieldtype": "Password",
+			"label": "Passphrase"
+		},
+		{
+			"fieldname": "sb_billing",
+			"fieldtype": "Section Break",
+			"label": "Billing & Accounting"
+		},
+		{
+			"fieldname": "company",
+			"fieldtype": "Link",
+			"label": "Company",
+			"options": "Company"
+		},
+		{
+			"fieldname": "invoice_item_code",
+			"fieldtype": "Link",
+			"label": "Invoice Item Code",
+			"options": "Item",
+			"description": "Item used on Sales Invoices created from PayFast payments"
+		},
+		{
+			"fieldname": "cb_billing",
+			"fieldtype": "Column Break"
+		},
+		{
+			"fieldname": "mode_of_payment",
+			"fieldtype": "Link",
+			"label": "Mode of Payment",
+			"options": "Mode of Payment",
+			"description": "Used when creating Payment Entries from PayFast payments"
+		},
+		{
+			"fieldname": "sb_urls",
+			"fieldtype": "Section Break",
+			"label": "URLs"
+		},
+		{
+			"fieldname": "return_url",
+			"fieldtype": "Data",
+			"label": "Return URL",
+			"description": "Redirect after successful payment (leave blank for auto)"
+		},
+		{
+			"fieldname": "cancel_url",
+			"fieldtype": "Data",
+			"label": "Cancel URL",
+			"description": "Redirect after cancelled payment (leave blank for auto)"
+		},
+		{
+			"fieldname": "cb_urls",
+			"fieldtype": "Column Break"
+		},
+		{
+			"fieldname": "notify_url",
+			"fieldtype": "Data",
+			"label": "ITN Notify URL",
+			"description": "PayFast callback URL (leave blank for auto)"
+		},
+		{
+			"fieldname": "process_url",
+			"fieldtype": "Data",
+			"label": "Process URL Override",
+			"description": "Override PayFast checkout URL (sandbox/production auto-detected)"
+		},
+		{
+			"fieldname": "sb_recurring",
+			"fieldtype": "Section Break",
+			"label": "Recurring Payments"
+		},
+		{
+			"default": "0",
+			"fieldname": "recurring_enabled",
+			"fieldtype": "Check",
+			"label": "Enable Recurring Payments"
+		},
+		{
+			"fieldname": "recurring_notify_url",
+			"fieldtype": "Data",
+			"label": "Recurring Notify URL",
+			"depends_on": "eval:doc.recurring_enabled",
+			"description": "Callback URL for recurring charge notifications"
+		},
+		{
+			"fieldname": "recurring_default_interval",
+			"fieldtype": "Select",
+			"label": "Default Billing Interval",
+			"options": "Monthly\nQuarterly\nAnnually",
+			"default": "Annually",
+			"depends_on": "eval:doc.recurring_enabled"
+		},
+		{
+			"fieldname": "sb_lifecycle",
+			"fieldtype": "Section Break",
+			"label": "Lifecycle & Validation",
+			"collapsible": 1
+		},
+		{
+			"default": "0",
+			"fieldname": "validate_remote_itn",
+			"fieldtype": "Check",
+			"label": "Validate ITN With PayFast",
+			"description": "POST ITN back to PayFast for server-side validation"
+		},
+		{
+			"default": "0",
+			"fieldname": "validate_remote_lifecycle",
+			"fieldtype": "Check",
+			"label": "Validate Lifecycle With PayFast",
+			"description": "Query PayFast to verify subscription status on lifecycle actions"
+		},
+		{
+			"fieldname": "allowed_source_ips",
+			"fieldtype": "Small Text",
+			"label": "Allowed ITN Source IPs",
+			"description": "Comma-separated IP allowlist for ITN callbacks (leave blank to allow all)"
+		},
+		{
+			"fieldname": "sb_lifecycle_urls",
+			"fieldtype": "Section Break",
+			"label": "Lifecycle URL Overrides",
+			"collapsible": 1
+		},
+		{
+			"fieldname": "lifecycle_validate_url",
+			"fieldtype": "Data",
+			"label": "Lifecycle Validate URL",
+			"description": "Override for subscription status endpoint"
+		},
+		{
+			"fieldname": "lifecycle_pause_url",
+			"fieldtype": "Data",
+			"label": "Lifecycle Pause URL",
+			"description": "Override for pause endpoint (supports {token} placeholder)"
+		},
+		{
+			"fieldname": "cb_lifecycle_urls",
+			"fieldtype": "Column Break"
+		},
+		{
+			"fieldname": "lifecycle_resume_url",
+			"fieldtype": "Data",
+			"label": "Lifecycle Resume URL",
+			"description": "Override for resume endpoint (supports {token} placeholder)"
+		},
+		{
+			"fieldname": "lifecycle_cancel_url",
+			"fieldtype": "Data",
+			"label": "Lifecycle Cancel URL",
+			"description": "Override for cancel endpoint (supports {token} placeholder)"
+		}
+	],
+	"index_web_pages_for_search": 0,
+	"issingle": 1,
+	"links": [],
+	"modified": "2026-03-18 12:00:00.000000",
+	"modified_by": "Administrator",
+	"module": "Payment Gateways",
+	"name": "PayFast Settings",
+	"owner": "Administrator",
+	"permissions": [
+		{
+			"create": 1,
+			"read": 1,
+			"role": "System Manager",
+			"write": 1
+		}
+	],
+	"sort_field": "creation",
+	"sort_order": "DESC",
+	"track_changes": 1
+}
