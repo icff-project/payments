@@ -9,6 +9,7 @@ from frappe.utils import cint, fmt_money
 from payments.payment_gateways.doctype.stripe_settings.stripe_settings import (
 	get_gateway_controller,
 )
+from payments.utils.utils import assert_payable
 
 no_cache = 1
 
@@ -32,6 +33,10 @@ def get_context(context):
 	if not (set(expected_keys) - set(list(frappe.form_dict))):
 		for key in expected_keys:
 			context[key] = frappe.form_dict[key]
+		# PR-Foundry fork patch (framework#149/#150): a checkout URL outlives
+		# the balance it was minted for. Refuse to render one that can no
+		# longer be paid, or whose amount disagrees with the request.
+		assert_payable(context.reference_doctype, context.reference_docname, amount=context.amount)
 		gateway_controller = get_gateway_controller(
 			context.reference_doctype, context.reference_docname, context.payment_gateway
 		)
@@ -72,6 +77,12 @@ def get_header_image(doc, gateway_controller):
 @frappe.whitelist(allow_guest=True)
 def make_payment(stripe_token_id, data, reference_doctype=None, reference_docname=None, payment_gateway=None):
 	data = json.loads(data)
+
+	# PR-Foundry fork patch (framework#149/#150). THE gate: this endpoint is
+	# whitelisted and allow_guest, and charges the card without get_context
+	# ever running -- so a guard only on the page would be decorative. It runs
+	# before anything else so a refused charge never reaches Stripe.
+	assert_payable(reference_doctype, reference_docname, amount=data.get("amount"))
 
 	data.update({"stripe_token_id": stripe_token_id})
 

@@ -1,4 +1,5 @@
 from payments.utils.utils import (
+	assert_payable,
 	before_install,
 	create_payment_gateway,
 	delete_custom_fields,
